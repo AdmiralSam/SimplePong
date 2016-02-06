@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -61,7 +62,7 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
-        basicShaderID = loadShaderProgram("BasicShader");
+        basicShaderID = loadShaderProgram("Shaders/BasicShader");
         positionBufferID = new int[1];
         glGenBuffers(1, positionBufferID, 0);
         glBindBuffer(GL_ARRAY_BUFFER, positionBufferID[0]);
@@ -109,10 +110,21 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
         int shader = glCreateShader(shaderType);
         StringBuilder shaderSourceBuilder = new StringBuilder();
         BufferedReader shaderReader = null;
+        ArrayList<String> attributes = new ArrayList<>();
+        ArrayList<String> uniforms = new ArrayList<>();
         try {
             shaderReader = new BufferedReader(new InputStreamReader(context.getAssets().open(filename + (shaderType == GL_VERTEX_SHADER ? ".vsf" : ".fsf"))));
             String line = shaderReader.readLine();
             while (line != null) {
+                String[] tokens = line.split(" ");
+                if (tokens[0].equals("attribute")) {
+                    String name = tokens[tokens.length - 1];
+                    attributes.add(name.substring(0, name.length() - 1));
+                }
+                if (tokens[0].equals("uniform")) {
+                    String name = tokens[tokens.length - 1];
+                    uniforms.add(name.substring(0, name.length() - 1));
+                }
                 shaderSourceBuilder.append(line + "\n");
                 line = shaderReader.readLine();
             }
@@ -129,7 +141,12 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
         }
         glShaderSource(shader, shaderSourceBuilder.toString());
         glCompileShader(shader);
-        Log.i("Shader Compilation", glGetShaderInfoLog(shader));
+        for(String attribute : attributes) {
+            Log.i("Attribute", attribute);
+        }
+        for(String uniform : uniforms) {
+            Log.i("Uniform", uniform);
+        }
         return shader;
     }
 
