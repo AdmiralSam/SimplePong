@@ -20,7 +20,7 @@ public class ContentManager implements Disposable {
         content = new HashMap<>();
     }
 
-    public ShaderProgram LoadShader(String filename) {
+    public ShaderProgram loadShader(String filename) {
         if (content.containsKey(filename) && content.get(filename) instanceof ShaderProgram) {
             return (ShaderProgram) content.get(filename);
         } else {
@@ -40,9 +40,9 @@ public class ContentManager implements Disposable {
         }
     }
 
-    public void Dispose() {
+    public void dispose() {
         for (Disposable disposable : content.values()) {
-            disposable.Dispose();
+            disposable.dispose();
         }
     }
 

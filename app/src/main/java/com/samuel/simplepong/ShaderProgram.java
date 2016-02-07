@@ -41,7 +41,7 @@ public class ShaderProgram implements Disposable {
         getAttributeUniformLocations(vertexShaderSource, fragmentShaderSource);
     }
 
-    public void Begin() {
+    public void begin() {
         if (!disposed) {
             if (activeShaderProgram == null) {
                 glUseProgram(programID);
@@ -57,7 +57,7 @@ public class ShaderProgram implements Disposable {
         }
     }
 
-    public void End() {
+    public void end() {
         if (!disposed) {
             if (activeShaderProgram == this) {
                 for (int attributeLocation : attributes.values()) {
@@ -72,7 +72,7 @@ public class ShaderProgram implements Disposable {
         }
     }
 
-    public int GetAttributeLocation(String name) {
+    public int getAttributeLocation(String name) {
         if (attributes.containsKey(name)) {
             return attributes.get(name);
         } else {
@@ -81,16 +81,16 @@ public class ShaderProgram implements Disposable {
         }
     }
 
-    public int GetUniformLocation(String name) {
-        if (attributes.containsKey(name)) {
-            return attributes.get(name);
+    public int getUniformLocation(String name) {
+        if (uniforms.containsKey(name)) {
+            return uniforms.get(name);
         } else {
-            Log.e("Shader", "Attribute " + name + " does not exist");
+            Log.e("Shader", "Uniform " + name + " does not exist");
             return -1;
         }
     }
 
-    public void Dispose() {
+    public void dispose() {
         glDeleteProgram(programID);
         disposed = true;
     }
