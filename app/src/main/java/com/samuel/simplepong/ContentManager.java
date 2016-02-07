@@ -12,8 +12,8 @@ import java.util.HashMap;
  * Created by Samuel on 2/7/2016.
  */
 public class ContentManager implements Disposable {
-    private HashMap<String, Disposable> content;
-    private Context context;
+    private final HashMap<String, Disposable> content;
+    private final Context context;
 
     public ContentManager(Context context) {
         this.context = context;
@@ -53,7 +53,8 @@ public class ContentManager implements Disposable {
             fileReader = new BufferedReader(new InputStreamReader(context.getAssets().open(filename)));
             String line = fileReader.readLine();
             while (line != null) {
-                fileStringBuilder.append(line + "\n");
+                fileStringBuilder.append(line);
+                fileStringBuilder.append("\n");
                 line = fileReader.readLine();
             }
         } catch (IOException e) {
@@ -65,10 +66,9 @@ public class ContentManager implements Disposable {
                     fileReader.close();
                 } catch (IOException e) {
                     Log.e("Content", "Failed to close buffered reader");
-                    return "";
                 }
             }
-            return fileStringBuilder.toString();
         }
+        return fileStringBuilder.toString();
     }
 }

@@ -30,8 +30,8 @@ public class ShaderProgram implements Disposable {
 
     private int programID;
     private boolean disposed;
-    private HashMap<String, Integer> attributes;
-    private HashMap<String, Integer> uniforms;
+    private final HashMap<String, Integer> attributes;
+    private final HashMap<String, Integer> uniforms;
 
     public ShaderProgram(String vertexShaderSource, String fragmentShaderSource) {
         attributes = new HashMap<>();

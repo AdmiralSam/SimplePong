@@ -30,9 +30,8 @@ import static android.opengl.GLES20.glViewport;
  */
 public class MainGLRenderer implements GLSurfaceView.Renderer {
     //Test
-    int basicShaderID;
-    int[] positionBufferID;
-    int[] colorBufferID;
+    private int[] positionBufferID;
+    private int[] colorBufferID;
     private Context context;
     private ContentManager contentManager;
     private ShaderProgram basicShader;
