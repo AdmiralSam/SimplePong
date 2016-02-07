@@ -25,7 +25,7 @@ import static android.opengl.GLES20.glUseProgram;
 /**
  * Created by Samuel on 2/7/2016.
  */
-public class ShaderProgram {
+public class ShaderProgram implements Disposable {
     private static ShaderProgram activeShaderProgram;
 
     private int programID;
@@ -50,10 +50,10 @@ public class ShaderProgram {
                 }
                 activeShaderProgram = this;
             } else {
-                Log.e("Begin", "Previous shader program has not ended");
+                Log.e("Shader", "Previous shader program has not ended");
             }
         } else {
-            Log.e("Begin", "Cannot begin a disposed shader program");
+            Log.e("Shader", "Cannot begin a disposed shader program");
         }
     }
 
@@ -65,10 +65,10 @@ public class ShaderProgram {
                 }
                 activeShaderProgram = null;
             } else {
-                Log.e("End", "This shader program is not active");
+                Log.e("Shader", "This shader program is not active");
             }
         } else {
-            Log.e("End", "Cannot end a disposed shader program");
+            Log.e("Shader", "Cannot end a disposed shader program");
         }
     }
 
@@ -76,7 +76,7 @@ public class ShaderProgram {
         if (attributes.containsKey(name)) {
             return attributes.get(name);
         } else {
-            Log.e("Attribute", "Attribute " + name + " does not exist");
+            Log.e("Shader", "Attribute " + name + " does not exist");
             return -1;
         }
     }
@@ -85,7 +85,7 @@ public class ShaderProgram {
         if (attributes.containsKey(name)) {
             return attributes.get(name);
         } else {
-            Log.e("Attribute", "Attribute " + name + " does not exist");
+            Log.e("Shader", "Attribute " + name + " does not exist");
             return -1;
         }
     }
@@ -99,18 +99,24 @@ public class ShaderProgram {
         int vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, vertexShaderSource);
         glCompileShader(vertexShader);
-        Log.e("Vsf Info", glGetShaderInfoLog(vertexShader));
+        if (glGetShaderInfoLog(vertexShader).length() != 0) {
+            Log.e("Shader", "Vertex Shader Compilation Log:\n" + glGetShaderInfoLog(vertexShader));
+        }
 
         int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, fragmentShaderSource);
         glCompileShader(fragmentShader);
-        Log.e("Fsf Info", glGetShaderInfoLog(fragmentShader));
+        if (glGetShaderInfoLog(fragmentShader).length() != 0) {
+            Log.e("Shader", "Fragment Shader Compilation Log:\n" + glGetShaderInfoLog(fragmentShader));
+        }
 
         programID = glCreateProgram();
         glAttachShader(programID, vertexShader);
         glAttachShader(programID, fragmentShader);
         glLinkProgram(programID);
-        Log.e("Program Link", glGetProgramInfoLog(programID));
+        if (glGetProgramInfoLog(programID).length() != 0) {
+            Log.e("Shader", "Program Linking Log:\n" + glGetProgramInfoLog(programID));
+        }
 
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
