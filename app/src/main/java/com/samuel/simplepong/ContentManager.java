@@ -1,10 +1,13 @@
 package com.samuel.simplepong;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
@@ -21,13 +24,11 @@ public class ContentManager implements Disposable {
     }
 
     public ShaderProgram loadShader(String filename) {
-        if (content.containsKey(filename) && content.get(filename) instanceof ShaderProgram) {
-            return (ShaderProgram) content.get(filename);
-        } else {
+        if (!content.containsKey(filename) || !(content.get(filename) instanceof ShaderProgram)) {
             String vertexShaderSource = getFileAsString(filename + ".vsf");
             String fragmentShaderSource = getFileAsString(filename + ".fsf");
             if (vertexShaderSource.length() != 0 && fragmentShaderSource.length() != 0) {
-                return new ShaderProgram(vertexShaderSource, fragmentShaderSource);
+                content.put(filename, new ShaderProgram(vertexShaderSource, fragmentShaderSource));
             } else {
                 if (vertexShaderSource.length() == 0) {
                     Log.e("Content", "Vertex shader file missing");
@@ -38,12 +39,32 @@ public class ContentManager implements Disposable {
                 return null;
             }
         }
+        return (ShaderProgram) content.get(filename);
+    }
+
+    public Texture loadTexture(String filename) {
+        if (!content.containsKey(filename) || !(content.get(filename) instanceof Texture)) {
+            content.put(filename, new Texture(getBitmap(filename)));
+        }
+        return (Texture)content.get(filename);
     }
 
     public void dispose() {
         for (Disposable disposable : content.values()) {
             disposable.dispose();
         }
+    }
+
+    private Bitmap getBitmap(String filename) {
+        InputStream fileStream;
+        Bitmap bitmap = null;
+        try {
+            fileStream = context.getAssets().open(filename);
+            bitmap = BitmapFactory.decodeStream(fileStream);
+        } catch(IOException e) {
+            Log.e("Content", "File \"" + filename + "\" does not exist");
+        }
+        return bitmap;
     }
 
     private String getFileAsString(String filename) {
