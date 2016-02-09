@@ -76,7 +76,7 @@ public class ShaderProgram implements Disposable {
         if (attributes.containsKey(name)) {
             return attributes.get(name);
         } else {
-            Log.e("Shader", "Attribute " + name + " does not exist");
+            Log.e("Shader", "Attribute \"" + name + "\" does not exist");
             return -1;
         }
     }
@@ -85,7 +85,7 @@ public class ShaderProgram implements Disposable {
         if (uniforms.containsKey(name)) {
             return uniforms.get(name);
         } else {
-            Log.e("Shader", "Uniform " + name + " does not exist");
+            Log.e("Shader", "Uniform \"" + name + "\" does not exist");
             return -1;
         }
     }
