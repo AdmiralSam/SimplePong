@@ -1,0 +1,11 @@
+attribute vec4 position;
+attribute vec2 uv;
+
+varying vec2 varyingUV;
+
+uniform mat4 transform;
+
+void main() {
+    varyingUV = uv;
+    glPosition = transform * position;
+}
