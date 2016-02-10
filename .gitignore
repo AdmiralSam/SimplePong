@@ -2,5 +2,7 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/*.xml
+/app
 .DS_Store
 /build
