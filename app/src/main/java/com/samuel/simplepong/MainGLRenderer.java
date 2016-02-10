@@ -2,8 +2,12 @@ package com.samuel.simplepong;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 
+import com.samuel.simplepong.framework.Callback0;
+import com.samuel.simplepong.framework.Callback1;
 import com.samuel.simplepong.framework.ContentManager;
+import com.samuel.simplepong.framework.MessageCenter;
 import com.samuel.simplepong.framework.Rectangle;
 import com.samuel.simplepong.framework.ShaderProgram;
 import com.samuel.simplepong.framework.SpriteBatch;
@@ -28,6 +32,7 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
     private ShaderProgram basicShader;
     private Texture testTexture;
     private SpriteBatch spriteBatch;
+    private MessageCenter testCenter;
     //Test
 
     public MainGLRenderer(Context context) {
@@ -41,6 +46,33 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
         basicShader = contentManager.loadShader("Shaders/2DShader");
         testTexture = contentManager.loadTexture("Textures/testTexture.png");
         spriteBatch = new SpriteBatch(1920, 1080);
+        testCenter = new MessageCenter();
+        testCenter.addListener("Test", new Callback0() {
+            @Override
+            public void callback() {
+                Log.e("Test", "0");
+            }
+        });
+        testCenter.addListener("Test", new Callback1<String>() {
+
+            @Override
+            public void callback(String parameter1) {
+                Log.e("Test", parameter1);
+            }
+        });
+        Callback1<Integer> ses = new Callback1<Integer>() {
+            @Override
+            public void callback(Integer parameter1) {
+                Log.e("Test", "-" + parameter1);
+            }
+        };
+        testCenter.addListener("Test", ses);
+        testCenter.broadcast("Test");
+        testCenter.broadcast("Test", "Hi");
+        testCenter.broadcast("Test", 5);
+        testCenter.removeListener(ses);
+        testCenter.broadcast("Test", "Hi");
+        testCenter.broadcast("Test", 5);
     }
 
     @Override

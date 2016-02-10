@@ -24,6 +24,7 @@ public class MessageCenter {
 
     public void broadcast(String message) {
         if (listeners.containsKey(message)) {
+            cleanup();
             for (Object listener : listeners.get(message)) {
                 if (listener instanceof Callback0) {
                     ((Callback0) listener).callback();
@@ -35,6 +36,7 @@ public class MessageCenter {
 
     public <A> void broadcast(String message, A parameter1) {
         if (listeners.containsKey(message)) {
+            cleanup();
             for (Object listener : listeners.get(message)) {
                 if (listener instanceof Callback1) {
                     try {
@@ -49,6 +51,7 @@ public class MessageCenter {
 
     public <A, B> void broadcast(String message, A parameter1, B parameter2) {
         if (listeners.containsKey(message)) {
+            cleanup();
             for (Object listener : listeners.get(message)) {
                 if (listener instanceof Callback2) {
                     try {
@@ -63,6 +66,7 @@ public class MessageCenter {
 
     public <A, B, C> void broadcast(String message, A parameter1, B parameter2, C parameter3) {
         if (listeners.containsKey(message)) {
+            cleanup();
             for (Object listener : listeners.get(message)) {
                 if (listener instanceof Callback3) {
                     try {
