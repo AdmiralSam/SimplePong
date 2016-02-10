@@ -14,6 +14,7 @@ import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
 import static android.opengl.GLES20.GL_FLOAT;
 import static android.opengl.GLES20.GL_STATIC_DRAW;
+import static android.opengl.GLES20.GL_TEXTURE0;
 import static android.opengl.GLES20.GL_TRIANGLES;
 import static android.opengl.GLES20.glBindBuffer;
 import static android.opengl.GLES20.glBufferData;
@@ -21,6 +22,7 @@ import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
 import static android.opengl.GLES20.glDrawArrays;
 import static android.opengl.GLES20.glGenBuffers;
+import static android.opengl.GLES20.glUniform1i;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
@@ -30,11 +32,11 @@ import static android.opengl.GLES20.glViewport;
  */
 public class MainGLRenderer implements GLSurfaceView.Renderer {
     //Test
-    private int[] positionBufferID;
-    private int[] colorBufferID;
     private Context context;
     private ContentManager contentManager;
     private ShaderProgram basicShader;
+    private Texture testTexture;
+    private SpriteBatch spriteBatch;
     //Test
 
     public MainGLRenderer(Context context) {
@@ -45,25 +47,9 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
-        positionBufferID = new int[1];
-        glGenBuffers(1, positionBufferID, 0);
-        glBindBuffer(GL_ARRAY_BUFFER, positionBufferID[0]);
-        FloatBuffer positionBuffer = FloatBuffer.allocate(12);
-        positionBuffer.put(new float[]{0.0f, 0.5f, 0.0f, 1.0f,
-                0.5f, -0.5f, 0.0f, 1.0f,
-                -0.5f, -0.5f, 0.0f, 1.0f});
-        positionBuffer.position(0);
-        glBufferData(GL_ARRAY_BUFFER, 48, positionBuffer, GL_STATIC_DRAW);
-        colorBufferID = new int[1];
-        glGenBuffers(1, colorBufferID, 0);
-        glBindBuffer(GL_ARRAY_BUFFER, colorBufferID[0]);
-        FloatBuffer colorBuffer = FloatBuffer.allocate(12);
-        colorBuffer.put(new float[]{0.0f, 0.5f, 0.0f, 1.0f,
-                0.5f, 0.5f, 0.0f, 1.0f,
-                0.5f, 0.5f, 0.0f, 1.0f});
-        colorBuffer.position(0);
-        glBufferData(GL_ARRAY_BUFFER, 48, colorBuffer, GL_STATIC_DRAW);
-        basicShader = contentManager.loadShader("Shaders/BasicShader");
+        basicShader = contentManager.loadShader("Shaders/2DShader");
+        testTexture = contentManager.loadTexture("Textures/testTexture.png");
+        spriteBatch = new SpriteBatch(1920, 1080, basicShader);
     }
 
     @Override
@@ -74,16 +60,10 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        basicShader.begin();
-        glBindBuffer(GL_ARRAY_BUFFER, positionBufferID[0]);
-        glVertexAttribPointer(basicShader.getAttributeLocation("position"), 4, GL_FLOAT, false, 0, 0);
-        glBindBuffer(GL_ARRAY_BUFFER, colorBufferID[0]);
-        glVertexAttribPointer(basicShader.getAttributeLocation("color"), 4, GL_FLOAT, false, 0, 0);
-        float[] testMatrix = new float[16];
-        Matrix.setIdentityM(testMatrix, 0);
-        Matrix.rotateM(testMatrix, 0, 90, 0.0f, 0.0f, 1.0f);
-        glUniformMatrix4fv(basicShader.getUniformLocation("matrix"), 1, false, testMatrix, 0);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        basicShader.end();
+        spriteBatch.begin();
+        spriteBatch.drawTexture(testTexture, new Rectangle(0, 0, 512, 512), new Rectangle(0, 0, 100, 100));
+        spriteBatch.drawTexture(testTexture, new Rectangle(512, 0, 512, 512), new Rectangle(100, 100, 100, 100));
+        spriteBatch.drawTexture(testTexture, new Rectangle(512, 512, 512, 512), new Rectangle(200, 200, 100, 100));
+        spriteBatch.end();
     }
 }
