@@ -27,11 +27,10 @@ import static android.opengl.GLES20.glUseProgram;
  */
 public class ShaderProgram implements Disposable {
     private static ShaderProgram activeShaderProgram;
-
-    private int programID;
-    private boolean disposed;
     private final HashMap<String, Integer> attributes;
     private final HashMap<String, Integer> uniforms;
+    private int programID;
+    private boolean disposed;
 
     public ShaderProgram(String vertexShaderSource, String fragmentShaderSource) {
         attributes = new HashMap<>();

@@ -43,18 +43,17 @@ public class Texture implements Disposable {
         if (!disposed) {
             glActiveTexture(activeTextureUnit);
             glBindTexture(GL_TEXTURE_2D, textureID);
-        }
-        else {
+        } else {
             Log.e("Texture", "Cannot use a disposed texture");
         }
     }
 
     public float getUVX(int pixelX) {
-        return (float)pixelX / width;
+        return (float) pixelX / width;
     }
 
     public float getUVY(int pixelY) {
-        return (float)pixelY / height;
+        return (float) pixelY / height;
     }
 
     public int getWidth() {

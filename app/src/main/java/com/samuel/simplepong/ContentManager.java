@@ -46,7 +46,7 @@ public class ContentManager implements Disposable {
         if (!content.containsKey(filename) || !(content.get(filename) instanceof Texture)) {
             content.put(filename, new Texture(getBitmap(filename)));
         }
-        return (Texture)content.get(filename);
+        return (Texture) content.get(filename);
     }
 
     public void dispose() {
@@ -61,7 +61,7 @@ public class ContentManager implements Disposable {
         try {
             fileStream = context.getAssets().open(filename);
             bitmap = BitmapFactory.decodeStream(fileStream);
-        } catch(IOException e) {
+        } catch (IOException e) {
             Log.e("Content", "File \"" + filename + "\" does not exist");
         }
         return bitmap;
