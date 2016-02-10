@@ -1,9 +1,12 @@
-package com.samuel.simplepong.framework;
+package com.samuel.simplepong.framework.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.samuel.simplepong.framework.graphics.ShaderProgram;
+import com.samuel.simplepong.framework.graphics.Texture;
 
 import java.io.BufferedReader;
 import java.io.IOException;

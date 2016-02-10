@@ -1,6 +1,8 @@
-package com.samuel.simplepong.framework;
+package com.samuel.simplepong.framework.graphics;
 
 import android.util.Log;
+
+import com.samuel.simplepong.framework.core.Disposable;
 
 import java.util.HashMap;
 

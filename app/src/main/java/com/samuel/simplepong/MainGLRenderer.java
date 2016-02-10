@@ -4,14 +4,14 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
-import com.samuel.simplepong.framework.Callback0;
-import com.samuel.simplepong.framework.Callback1;
-import com.samuel.simplepong.framework.ContentManager;
-import com.samuel.simplepong.framework.MessageCenter;
-import com.samuel.simplepong.framework.Rectangle;
-import com.samuel.simplepong.framework.ShaderProgram;
-import com.samuel.simplepong.framework.SpriteBatch;
-import com.samuel.simplepong.framework.Texture;
+import com.samuel.simplepong.framework.messaging.Callback0;
+import com.samuel.simplepong.framework.messaging.Callback1;
+import com.samuel.simplepong.framework.core.ContentManager;
+import com.samuel.simplepong.framework.messaging.MessageCenter;
+import com.samuel.simplepong.framework.core.Rectangle;
+import com.samuel.simplepong.framework.graphics.ShaderProgram;
+import com.samuel.simplepong.framework.graphics.SpriteBatch;
+import com.samuel.simplepong.framework.graphics.Texture;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

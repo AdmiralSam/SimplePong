@@ -1,6 +1,8 @@
-package com.samuel.simplepong.framework;
+package com.samuel.simplepong.framework.graphics;
 
 import android.util.Log;
+
+import com.samuel.simplepong.framework.core.Rectangle;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;

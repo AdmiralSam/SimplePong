@@ -1,4 +1,4 @@
-package com.samuel.simplepong.framework;
+package com.samuel.simplepong.framework.messaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;

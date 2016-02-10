@@ -1,4 +1,6 @@
-package com.samuel.simplepong.framework;
+package com.samuel.simplepong.framework.core;
+
+import com.samuel.simplepong.framework.messaging.MessageCenter;
 
 /**
  * Created by SamuelDong on 2/10/16.

@@ -1,8 +1,10 @@
-package com.samuel.simplepong.framework;
+package com.samuel.simplepong.framework.graphics;
 
 import android.graphics.Bitmap;
 import android.opengl.GLUtils;
 import android.util.Log;
+
+import com.samuel.simplepong.framework.core.Disposable;
 
 import static android.opengl.GLES20.GL_LINEAR;
 import static android.opengl.GLES20.GL_TEXTURE_2D;
