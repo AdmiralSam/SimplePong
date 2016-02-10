@@ -3,6 +3,12 @@ package com.samuel.simplepong;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 
+import com.samuel.simplepong.framework.ContentManager;
+import com.samuel.simplepong.framework.Rectangle;
+import com.samuel.simplepong.framework.ShaderProgram;
+import com.samuel.simplepong.framework.SpriteBatch;
+import com.samuel.simplepong.framework.Texture;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
