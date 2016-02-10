@@ -2,6 +2,7 @@ package com.samuel.simplepong;
 
 import android.graphics.Bitmap;
 import android.opengl.GLUtils;
+import android.util.Log;
 
 import static android.opengl.GLES20.GL_LINEAR;
 import static android.opengl.GLES20.GL_TEXTURE_2D;
@@ -35,12 +36,17 @@ public class Texture implements Disposable {
         texture.recycle();
 
         this.textureID = textureID[0];
-        disposed = true;
+        disposed = false;
     }
 
     public void bindToUnit(int activeTextureUnit) {
-        glActiveTexture(activeTextureUnit);
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        if (!disposed) {
+            glActiveTexture(activeTextureUnit);
+            glBindTexture(GL_TEXTURE_2D, textureID);
+        }
+        else {
+            Log.e("Texture", "Cannot use a disposed texture");
+        }
     }
 
     public float getUVX(int pixelX) {
