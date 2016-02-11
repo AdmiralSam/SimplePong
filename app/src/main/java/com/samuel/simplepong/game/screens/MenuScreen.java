@@ -44,7 +44,6 @@ public class MenuScreen extends Screen {
             public void callback(Integer pointerID, Point location) {
                 for (int i = 0; i < 4; i++) {
                     if (!used[i]) {
-                        Log.e("W", "Added");
                         used[i] = true;
                         ids[i] = pointerID;
                         locations[i].x = location.x;
@@ -59,7 +58,6 @@ public class MenuScreen extends Screen {
             public void callback(Integer pointerID, Point location) {
                 for (int i = 0; i < 4; i++) {
                     if (used[i] && ids[i] == pointerID) {
-                        Log.e("W", "Removed");
                         used[i] = false;
                         break;
                     }
@@ -71,7 +69,6 @@ public class MenuScreen extends Screen {
             public void callback(Integer pointerID, Point location) {
                 for (int i = 0; i < 4; i++) {
                     if (used[i] && ids[i] == pointerID) {
-                        Log.e("W", "Moved");
                         locations[i].x = location.x;
                         locations[i].y = location.y;
                         break;
@@ -99,7 +96,6 @@ public class MenuScreen extends Screen {
 
     @Override
     public void update(float deltaTime) {
-        Log.d("Menu Screen", "Delta: " + deltaTime);
     }
 
     @Override
