@@ -3,17 +3,16 @@ package com.samuel.simplepong;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+import android.view.MotionEvent;
 
-import com.samuel.simplepong.framework.core.Screen;
-import com.samuel.simplepong.framework.messaging.Callback0;
-import com.samuel.simplepong.framework.messaging.Callback1;
 import com.samuel.simplepong.framework.core.ContentManager;
-import com.samuel.simplepong.framework.messaging.MessageCenter;
-import com.samuel.simplepong.framework.core.Rectangle;
+import com.samuel.simplepong.framework.core.Screen;
 import com.samuel.simplepong.framework.graphics.ShaderProgram;
 import com.samuel.simplepong.framework.graphics.SpriteBatch;
-import com.samuel.simplepong.framework.graphics.Texture;
+import com.samuel.simplepong.framework.messaging.Callback1;
+import com.samuel.simplepong.framework.messaging.MessageCenter;
 import com.samuel.simplepong.game.screens.MenuScreen;
+import com.samuel.simplepong.game.systems.TouchSystem;
 
 import java.util.HashMap;
 
@@ -36,31 +35,26 @@ import static android.opengl.GLES20.glViewport;
  */
 public class MainGLRenderer implements GLSurfaceView.Renderer {
     public static MessageCenter messageCenter;
-    private final ContentManager contentManager;
-    private final SpriteBatch spriteBatch;
-    private final ShaderProgram defaultShader;
     private final Context context;
-    private Screen currentScreen;
+    private final ContentManager contentManager;
     private final HashMap<String, Screen> screens;
+    private SpriteBatch spriteBatch;
+    private Screen currentScreen;
     private long lastTime;
+    private TouchSystem testSystem;
 
     public MainGLRenderer(Context context) {
         this.context = context;
-        contentManager = new ContentManager(context);
-        defaultShader = contentManager.loadShader("Shaders/2DShader");
-        spriteBatch = new SpriteBatch(1920, 1080, defaultShader);
         screens = new HashMap<>();
+        contentManager = new ContentManager(context);
         messageCenter = new MessageCenter();
-        messageCenter.addListener("Switch Screens", new Callback1<String>(){
+        messageCenter.addListener("Switch Screens", new Callback1<String>() {
             @Override
             public void callback(String parameter1) {
                 switchScreens(parameter1);
             }
         });
-        initializeScreens();
-        currentScreen = screens.get("Menu Screen");
-        currentScreen.loadContent();
-        currentScreen.start();
+        testSystem = new TouchSystem();
     }
 
     @Override
@@ -69,6 +63,12 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         lastTime = System.nanoTime();
+        ShaderProgram defaultShader = contentManager.loadShader("Shaders/2DShader");
+        spriteBatch = new SpriteBatch(1920, 1080, defaultShader);
+        initializeScreens();
+        currentScreen = screens.get("Menu Screen");
+        currentScreen.loadContent();
+        currentScreen.start();
     }
 
     @Override
@@ -86,7 +86,7 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
     }
 
     private float getElapsedTime() {
-        float elapsedTime = (float)((double)(System.nanoTime() - lastTime) / 1000000000.0);
+        float elapsedTime = (float) ((double) (System.nanoTime() - lastTime) / 1000000000.0);
         lastTime = System.nanoTime();
         return elapsedTime;
     }
@@ -104,9 +104,14 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
             currentScreen = newScreen;
             oldScreen.unloadContent();
             oldScreen.reset();
-        }
-        else {
+        } else {
             Log.e("Main", "Screen " + screenName + " does not exist");
+        }
+    }
+
+    public void onTouchEvent(MotionEvent event) {
+        if (currentScreen != null) {
+            testSystem.onTouchEvent(event, currentScreen.messageCenter);
         }
     }
 }

@@ -32,11 +32,11 @@ public class SpriteBatch {
     private final ArrayList<Texture> textures;
     private final ArrayList<Rectangle> sourceRectangles;
     private final ArrayList<Rectangle> destinationRectangles;
+    private final ShaderProgram defaultShader;
     private int virtualWidth;
     private int virtualHeight;
     private boolean active;
     private ShaderProgram spriteShader;
-    private final ShaderProgram defaultShader;
 
     public SpriteBatch(int virtualWidth, int virtualHeight, ShaderProgram defaultShader) {
         this.virtualWidth = virtualWidth;
@@ -58,9 +58,13 @@ public class SpriteBatch {
     }
 
     public void drawTexture(Texture texture, Rectangle sourceRectangle, Rectangle destinationRectangle) {
-        textures.add(texture);
-        sourceRectangles.add(sourceRectangle);
-        destinationRectangles.add(destinationRectangle);
+        if (active) {
+            textures.add(texture);
+            sourceRectangles.add(sourceRectangle);
+            destinationRectangles.add(destinationRectangle);
+        } else {
+            Log.e("SpriteBatch", "Cannot draw texture when sprite batch has not begun");
+        }
     }
 
     public void begin() {
@@ -73,7 +77,7 @@ public class SpriteBatch {
             this.spriteShader = spriteShader;
             spriteShader.begin();
         } else {
-            Log.e("SpriteBatch", "Sprite batch has already begun");
+            Log.e("SpriteBatch", "Cannot begin when sprite batch has not ended");
         }
     }
 
@@ -112,7 +116,7 @@ public class SpriteBatch {
             destinationRectangles.clear();
             active = false;
         } else {
-            Log.e("SpriteBatch", "Sprite batch has not begun yet");
+            Log.e("SpriteBatch", "Cannot end when sprite batch has not begun");
         }
     }
 
