@@ -1,5 +1,6 @@
 package com.samuel.simplepong.framework.core;
 
+import com.samuel.simplepong.framework.graphics.SpriteBatch;
 import com.samuel.simplepong.framework.messaging.MessageCenter;
 
 /**
@@ -18,15 +19,21 @@ public abstract class Screen {
 
     public abstract void loadContent();
 
-    public abstract void unloadContent();
+    public void unloadContent() {
+        content.dispose();
+    }
 
-    public abstract void draw();
+    public abstract void draw(SpriteBatch spriteBatch);
 
     public abstract void update(float deltaTime);
 
-    public abstract void start();
+    public void start() {
+        screenState = ScreenState.Active;
+    }
 
-    public abstract void reset();
+    public void reset() {
+        screenState = ScreenState.Inactive;
+    }
 
     protected enum ScreenState {Inactive, Loading, Active, Unloading}
 }

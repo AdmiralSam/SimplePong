@@ -36,10 +36,12 @@ public class SpriteBatch {
     private int virtualHeight;
     private boolean active;
     private ShaderProgram spriteShader;
+    private final ShaderProgram defaultShader;
 
-    public SpriteBatch(int virtualWidth, int virtualHeight) {
+    public SpriteBatch(int virtualWidth, int virtualHeight, ShaderProgram defaultShader) {
         this.virtualWidth = virtualWidth;
         this.virtualHeight = virtualHeight;
+        this.defaultShader = defaultShader;
         active = false;
         textures = new ArrayList<>();
         sourceRectangles = new ArrayList<>();
@@ -59,6 +61,10 @@ public class SpriteBatch {
         textures.add(texture);
         sourceRectangles.add(sourceRectangle);
         destinationRectangles.add(destinationRectangle);
+    }
+
+    public void begin() {
+        begin(defaultShader);
     }
 
     public void begin(ShaderProgram spriteShader) {
