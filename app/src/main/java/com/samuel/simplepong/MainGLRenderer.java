@@ -50,8 +50,8 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
         messageCenter = new MessageCenter();
         messageCenter.addListener("Switch Screens", new Callback1<String>() {
             @Override
-            public void callback(String parameter1) {
-                switchScreens(parameter1);
+            public void callback(String screenName) {
+                switchScreens(screenName);
             }
         });
         testSystem = new TouchSystem();
@@ -93,6 +93,7 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 
     private void initializeScreens() {
         screens.put("Menu Screen", new MenuScreen(new ContentManager(context)));
+        screens.put("Game Screen", new MenuScreen(new ContentManager(context)));
     }
 
     private void switchScreens(String screenName) {

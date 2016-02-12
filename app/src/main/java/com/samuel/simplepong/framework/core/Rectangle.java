@@ -15,4 +15,8 @@ public class Rectangle {
         this.width = width;
         this.height = height;
     }
+
+    public boolean contains(Point p) {
+        return p.x >= x && p.x <= x + width && p.y >= y && p.y <= y + height;
+    }
 }
