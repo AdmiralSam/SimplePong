@@ -7,7 +7,7 @@ import com.samuel.simplepong.framework.messaging.MessageCenter;
  * Created by SamuelDong on 2/10/16.
  */
 public abstract class Screen {
-    public final MessageCenter messageCenter;
+    public static MessageCenter messageCenter;
     protected final ContentManager content;
     protected ScreenState screenState;
 

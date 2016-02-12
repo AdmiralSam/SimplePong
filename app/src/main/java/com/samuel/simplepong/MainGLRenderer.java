@@ -41,7 +41,7 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
     private SpriteBatch spriteBatch;
     private Screen currentScreen;
     private long lastTime;
-    private TouchSystem testSystem;
+    public static TouchSystem testSystem;
 
     public MainGLRenderer(Context context) {
         this.context = context;

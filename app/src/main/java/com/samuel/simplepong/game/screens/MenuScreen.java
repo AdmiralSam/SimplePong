@@ -16,22 +16,24 @@ public class MenuScreen extends Screen {
     private MenuState menuState;
     private Texture menuTexture;
     private float progress;
+    private Callback2<Integer, Point> onTouch;
+
     public MenuScreen(ContentManager content) {
         super(content);
         progress = 0.0f;
-    }
-
-    @Override
-    public void loadContent() {
-        menuTexture = content.loadTexture("Textures/simplePong.png");
-        messageCenter.addListener("Touch Down", new Callback2<Integer, Point>() {
+        onTouch = new Callback2<Integer, Point>() {
             @Override
             public void callback(Integer pointerID, Point location) {
                 if (menuState == MenuState.Idle && getButtonRectangle().contains(location)) {
                     menuState = MenuState.TransitionOut;
                 }
             }
-        });
+        };
+    }
+
+    @Override
+    public void loadContent() {
+        menuTexture = content.loadTexture("Textures/simplePong.png");
     }
 
     @Override
@@ -74,11 +76,13 @@ public class MenuScreen extends Screen {
     public void start() {
         super.start();
         menuState = MenuState.TransitionIn;
+        messageCenter.addListener("Touch Down", onTouch);
     }
 
     @Override
     public void reset() {
         super.reset();
+        messageCenter.removeListener(onTouch);
     }
 
     private Rectangle getButtonRectangle() {

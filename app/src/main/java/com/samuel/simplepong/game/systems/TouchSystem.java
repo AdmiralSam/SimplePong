@@ -38,13 +38,14 @@ public class TouchSystem {
             }
             break;
             case MotionEvent.ACTION_MOVE: {
-                int pointerIndex = event.getActionIndex();
-                int pointerID = event.getPointerId(pointerIndex);
-                float newX = event.getX(pointerIndex);
-                float newY = event.getY(pointerIndex);
-                pointers.get(pointerID).x = newX;
-                pointers.get(pointerID).y = newY;
-                messageCenter.broadcast("Touch Moved", pointerID, pointers.get(pointerID));
+                for (Integer pointerID : pointers.keySet()) {
+                    int pointerIndex = event.findPointerIndex(pointerID);
+                    float newX = event.getX(pointerIndex);
+                    float newY = event.getY(pointerIndex);
+                    pointers.get(pointerID).x = newX;
+                    pointers.get(pointerID).y = newY;
+                    messageCenter.broadcast("Touch Moved", pointerID, pointers.get(pointerID));
+                }
             }
         }
     }
