@@ -11,7 +11,9 @@ import com.samuel.simplepong.framework.graphics.ShaderProgram;
 import com.samuel.simplepong.framework.graphics.SpriteBatch;
 import com.samuel.simplepong.framework.messaging.Callback1;
 import com.samuel.simplepong.framework.messaging.MessageCenter;
+import com.samuel.simplepong.game.screens.GameScreen;
 import com.samuel.simplepong.game.screens.MenuScreen;
+//import com.samuel.simplepong.game.systems.NetworkSystem;
 import com.samuel.simplepong.game.systems.TouchSystem;
 
 import java.util.HashMap;
@@ -42,6 +44,7 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
     private Screen currentScreen;
     private long lastTime;
     public static TouchSystem testSystem;
+    //public static NetworkSystem networkSystem;
 
     public MainGLRenderer(Context context) {
         this.context = context;
@@ -93,7 +96,7 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
 
     private void initializeScreens() {
         screens.put("Menu Screen", new MenuScreen(new ContentManager(context)));
-        screens.put("Game Screen", new MenuScreen(new ContentManager(context)));
+        screens.put("Game Screen", new GameScreen(new ContentManager(context)));
     }
 
     private void switchScreens(String screenName) {
@@ -103,7 +106,7 @@ public class MainGLRenderer implements GLSurfaceView.Renderer {
             newScreen.loadContent();
             newScreen.start();
             currentScreen = newScreen;
-            oldScreen.unloadContent();
+            //oldScreen.unloadContent();
             oldScreen.reset();
         } else {
             Log.e("Main", "Screen " + screenName + " does not exist");

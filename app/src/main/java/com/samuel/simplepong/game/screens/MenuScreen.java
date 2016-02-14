@@ -24,8 +24,17 @@ public class MenuScreen extends Screen {
         onTouch = new Callback2<Integer, Point>() {
             @Override
             public void callback(Integer pointerID, Point location) {
-                if (menuState == MenuState.Idle && getButtonRectangle().contains(location)) {
-                    menuState = MenuState.TransitionOut;
+                if (menuState == MenuState.Idle && getSingleButtonRectangle().contains(location)
+                        ) {
+                    menuState = MenuState.OnClick;
+                }
+                else if (menuState == MenuState.Idle && getQuickButtonRectangle().contains(location)
+                        ){
+                    menuState = MenuState.OnClick;
+                }
+                else if(menuState == MenuState.Idle && getInviteButtonRectangle().contains(location)
+                        ){
+                    menuState = MenuState.OnClick;
                 }
             }
         };
@@ -33,7 +42,7 @@ public class MenuScreen extends Screen {
 
     @Override
     public void loadContent() {
-        menuTexture = content.loadTexture("Textures/simplePong.png");
+        menuTexture = content.loadTexture("Textures/testTexture.png");
     }
 
     @Override
@@ -44,30 +53,43 @@ public class MenuScreen extends Screen {
     @Override
     public void draw(SpriteBatch spriteBatch) {
         spriteBatch.begin();
-        spriteBatch.drawTexture(menuTexture, new Rectangle(0, 0, 1000, 500), new Rectangle(0, 0, 1920, 1080));
-        spriteBatch.drawTexture(menuTexture, new Rectangle(0, 500, 300, 100), getButtonRectangle());
+        //spriteBatch.drawTexture(menuTexture, new Rectangle(0, 0, 1000, 500), new Rectangle(0, 0, 1920, 1080));
+        spriteBatch.drawTexture(menuTexture, new Rectangle(0, 0, 300, 100), getSingleButtonRectangle());
+        spriteBatch.drawTexture(menuTexture, new Rectangle(512, 0, 300, 100), getQuickButtonRectangle());
+        spriteBatch.drawTexture(menuTexture, new Rectangle(0, 512, 300, 100), getInviteButtonRectangle());
+        //spriteBatch.drawTexture(menuTexture, new Rectangle(512, 512, 300, 100), getButtonRectangle());
+
         spriteBatch.end();
     }
 
     @Override
     public void update(float deltaTime) {
         switch (menuState) {
-            case TransitionIn:
-                if (progress < 1.0f) {
-                    progress += deltaTime * 0.5f;
-                } else {
-                    progress = 1.0f;
-                    menuState = MenuState.Idle;
-                }
-                break;
-            case TransitionOut:
-                if (progress > 0.0f) {
-                    progress -= deltaTime * 0.5f;
-                } else {
-                    progress = 0.0f;
-                    menuState = MenuState.Idle;
-                    MainGLRenderer.messageCenter.broadcast("Switch Screens", "Game Screen");
-                }
+//            case TransitionIn:
+//                if (progress < 1.0f) {
+//                    progress += deltaTime * 0.5f;
+//                } else {
+//                    progress = 1.0f;
+//                    menuState = MenuState.Idle;
+//                }
+//                break;
+//            case TransitionOut:
+//                if (progress > 0.0f) {
+//                    progress -= deltaTime * 0.5f;
+//                } else {
+//                    progress = 0.0f;
+//                    menuState = MenuState.Idle;
+//                    MainGLRenderer.messageCenter.broadcast("Switch Screens", "Game Screen");
+//                    //the same as:
+//                    //drag the code here and perform "switchScreens(it is a MainGLRender Method!)"
+//                    //then continue running code below
+//                }
+//                break;
+            case OnClick:
+                //MainGLRenderer.messageCenter.broadcast("Switch Screens", "Game Screen");
+
+                MainGLRenderer.messageCenter.broadcast("Sign in");
+                menuState=MenuState.Idle;
                 break;
         }
     }
@@ -75,7 +97,7 @@ public class MenuScreen extends Screen {
     @Override
     public void start() {
         super.start();
-        menuState = MenuState.TransitionIn;
+        menuState = MenuState.Idle;
         messageCenter.addListener("Touch Down", onTouch);
     }
 
@@ -85,11 +107,18 @@ public class MenuScreen extends Screen {
         messageCenter.removeListener(onTouch);
     }
 
-    private Rectangle getButtonRectangle() {
-        float x = -150.0f + 1110.0f * progress;
-        float y = 648;
-        return new Rectangle((int) x - 150, (int) y - 50, 300, 100);
+    private Rectangle getSingleButtonRectangle() {
+        return new Rectangle((int) 1920/2 - 150, (int) 1080/2 - 50 - 200, 300, 100);
     }
 
-    private enum MenuState {TransitionIn, Idle, TransitionOut}
+    private Rectangle getQuickButtonRectangle() {
+        return new Rectangle((int) 1920/2 - 150, (int) 1080/2 - 50, 300, 100);
+    }
+
+    private Rectangle getInviteButtonRectangle() {
+        return new Rectangle((int) 1920/2 - 150, (int) 1080/2 - 50 + 200, 300, 100);
+    }
+
+    //private enum MenuState {TransitionIn, Idle, TransitionOut}
+    private enum MenuState {TransitionIn, Idle, OnClick}
 }
