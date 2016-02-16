@@ -69,5 +69,6 @@ public class NetworkSystem extends Activity {
                 MainActivity.mGoogleApiClient.disconnect();
             }
         };
+
     }
 }

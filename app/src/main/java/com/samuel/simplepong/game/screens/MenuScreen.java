@@ -86,7 +86,7 @@ public class MenuScreen extends Screen {
             case OnClick:
                 //MainGLRenderer.messageCenter.broadcast("Switch Screens", "Game Screen");
 
-                MainGLRenderer.messageCenter.broadcast("Sign in");
+                MainGLRenderer.messageCenter.broadcast("Quick Game");
                 menuState = MenuState.Idle;
                 break;
         }
