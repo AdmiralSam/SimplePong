@@ -27,13 +27,11 @@ public class MenuScreen extends Screen {
                 if (menuState == MenuState.Idle && getSingleButtonRectangle().contains(location)
                         ) {
                     menuState = MenuState.OnClick;
-                }
-                else if (menuState == MenuState.Idle && getQuickButtonRectangle().contains(location)
-                        ){
+                } else if (menuState == MenuState.Idle && getQuickButtonRectangle().contains(location)
+                        ) {
                     menuState = MenuState.OnClick;
-                }
-                else if(menuState == MenuState.Idle && getInviteButtonRectangle().contains(location)
-                        ){
+                } else if (menuState == MenuState.Idle && getInviteButtonRectangle().contains(location)
+                        ) {
                     menuState = MenuState.OnClick;
                 }
             }
@@ -89,7 +87,7 @@ public class MenuScreen extends Screen {
                 //MainGLRenderer.messageCenter.broadcast("Switch Screens", "Game Screen");
 
                 MainGLRenderer.messageCenter.broadcast("Sign in");
-                menuState=MenuState.Idle;
+                menuState = MenuState.Idle;
                 break;
         }
     }
@@ -108,17 +106,19 @@ public class MenuScreen extends Screen {
     }
 
     private Rectangle getSingleButtonRectangle() {
-        return new Rectangle((int) 1920/2 - 150, (int) 1080/2 - 50 - 200, 300, 100);
+        return new Rectangle(1920 / 2 - 150, 1080 / 2 - 50 - 200, 300, 100);
     }
 
     private Rectangle getQuickButtonRectangle() {
-        return new Rectangle((int) 1920/2 - 150, (int) 1080/2 - 50, 300, 100);
+        return new Rectangle(1920 / 2 - 150, 1080 / 2 - 50, 300, 100);
     }
 
     private Rectangle getInviteButtonRectangle() {
-        return new Rectangle((int) 1920/2 - 150, (int) 1080/2 - 50 + 200, 300, 100);
+        return new Rectangle(1920 / 2 - 150, 1080 / 2 - 50 + 200, 300, 100);
     }
 
     //private enum MenuState {TransitionIn, Idle, TransitionOut}
-    private enum MenuState {TransitionIn, Idle, OnClick}
+    private enum MenuState {
+        TransitionIn, Idle, OnClick
+    }
 }

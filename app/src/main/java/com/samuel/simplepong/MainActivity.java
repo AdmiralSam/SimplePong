@@ -6,9 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -17,16 +17,17 @@ import com.google.android.gms.drive.Drive;
 
 public class MainActivity extends FragmentActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
-    public static GoogleApiClient mGoogleApiClient;
     // Request code to use when launching the resolution activity
     private static final int REQUEST_RESOLVE_ERROR = 1001;
+
     // Unique tag for the error dialog fragment
     private static final String DIALOG_ERROR = "dialog_error";
+    private static final String STATE_RESOLVING_ERROR = "resolving_error";
+    public static GoogleApiClient mGoogleApiClient;
+    MainGLSurfaceView glSurfaceView;
+
     // Bool to track whether the app is already resolving an error
     private boolean mResolvingError = false;
-
-    MainGLSurfaceView glSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,10 @@ public class MainActivity extends FragmentActivity
         // until onConnected() is called.
     }
 
+    // The rest of this code is all about building the error dialog
+
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
         // This callback is important for handling errors that
         // may occur while attempting to connect with Google.
         //
@@ -72,7 +75,6 @@ public class MainActivity extends FragmentActivity
         // More about this in the 'Handle Connection Failures' section.
         if (mResolvingError) {
             // Already attempting to resolve an error.
-            return;
         } else if (result.hasResolution()) {
             try {
                 mResolvingError = true;
@@ -88,8 +90,6 @@ public class MainActivity extends FragmentActivity
         }
     }
 
-    // The rest of this code is all about building the error dialog
-
     /* Creates a dialog for an error message */
     private void showErrorDialog(int errorCode) {
         // Create a fragment for the error dialog
@@ -104,24 +104,6 @@ public class MainActivity extends FragmentActivity
     /* Called from ErrorDialogFragment when the dialog is dismissed. */
     public void onDialogDismissed() {
         mResolvingError = false;
-    }
-
-    /* A fragment to display an error dialog */
-    public static class ErrorDialogFragment extends DialogFragment {
-        public ErrorDialogFragment() { }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Get the error code and retrieve the appropriate dialog
-            int errorCode = this.getArguments().getInt(DIALOG_ERROR);
-            return GoogleApiAvailability.getInstance().getErrorDialog(
-                    this.getActivity(), errorCode, REQUEST_RESOLVE_ERROR);
-        }
-
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-            ((MainActivity) getActivity()).onDialogDismissed();
-        }
     }
 
 //    @Override
@@ -159,12 +141,29 @@ public class MainActivity extends FragmentActivity
         }
     }
 
-    private static final String STATE_RESOLVING_ERROR = "resolving_error";
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
     }
 
+    /* A fragment to display an error dialog */
+    public static class ErrorDialogFragment extends DialogFragment {
+        public ErrorDialogFragment() {
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Get the error code and retrieve the appropriate dialog
+            int errorCode = this.getArguments().getInt(DIALOG_ERROR);
+            return GoogleApiAvailability.getInstance().getErrorDialog(
+                    this.getActivity(), errorCode, REQUEST_RESOLVE_ERROR);
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            ((MainActivity) getActivity()).onDialogDismissed();
+        }
+    }
 }

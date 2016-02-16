@@ -22,14 +22,13 @@ public class GameScreen extends Screen {
     public GameScreen(ContentManager content) {
         super(content);
         progress = 0.0f;
-        move=1.0f;
+        move = 1.0f;
         onTouch = new Callback2<Integer, Point>() {
             @Override
             public void callback(Integer pointerID, Point location) {
                 if (gameState == GameState.Idle && getBackButtonRectangle().contains(location)) {
                     gameState = GameState.TransitionOut;
-                }
-                else if(gameState == GameState.Idle && getClickButtonRectangle().contains(location)){
+                } else if (gameState == GameState.Idle && getClickButtonRectangle().contains(location)) {
                     gameState = GameState.OnClick;
                 }
             }
@@ -72,7 +71,7 @@ public class GameScreen extends Screen {
                 } else {
                     progress = 0.0f;
                     gameState = GameState.Idle;
-                    move=1.0f;
+                    move = 1.0f;
                     MainGLRenderer.messageCenter.broadcast("Switch Screens", "Menu Screen");
                     //the same as:
                     //drag the code here and perform "switchScreens(it is a MainGLRender Method!)"
@@ -80,15 +79,12 @@ public class GameScreen extends Screen {
                 }
                 break;
             case OnClick:
-                if (move > 0.0f)
-                {
-                    move-=0.1f;
-                    gameState=GameState.Idle;
-                }
-                else
-                {
-                    move=0.0f;
-                    gameState=GameState.Idle;
+                if (move > 0.0f) {
+                    move -= 0.1f;
+                    gameState = GameState.Idle;
+                } else {
+                    move = 0.0f;
+                    gameState = GameState.Idle;
                 }
         }
     }
@@ -108,15 +104,15 @@ public class GameScreen extends Screen {
 
     private Rectangle getBackButtonRectangle() {
         float x = -150.0f + 1110.0f * progress;
-        float y = 648+100;
+        float y = 648 + 100;
         return new Rectangle((int) x - 150, (int) y - 50, 300, 100);
     }
 
     private Rectangle getClickButtonRectangle() {
-        float x=(1920/2-150)*move;
-        float y=1080/2-50;
-        return new Rectangle((int)x,(int)y, 300, 100);
+        float x = (1920 / 2 - 150) * move;
+        float y = 1080 / 2 - 50;
+        return new Rectangle((int) x, (int) y, 300, 100);
     }
 
-    private enum GameState {TransitionIn, Idle, TransitionOut,OnClick}
+    private enum GameState {TransitionIn, Idle, TransitionOut, OnClick}
 }

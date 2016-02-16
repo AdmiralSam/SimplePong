@@ -13,7 +13,6 @@ import com.samuel.simplepong.framework.messaging.Callback1;
 import com.samuel.simplepong.framework.messaging.MessageCenter;
 import com.samuel.simplepong.game.screens.GameScreen;
 import com.samuel.simplepong.game.screens.MenuScreen;
-//import com.samuel.simplepong.game.systems.NetworkSystem;
 import com.samuel.simplepong.game.systems.TouchSystem;
 
 import java.util.HashMap;
@@ -32,18 +31,19 @@ import static android.opengl.GLES20.glClearColor;
 import static android.opengl.GLES20.glEnable;
 import static android.opengl.GLES20.glViewport;
 
+
 /**
  * Created by Samuel on 2/2/2016.
  */
 public class MainGLRenderer implements GLSurfaceView.Renderer {
     public static MessageCenter messageCenter;
+    public static TouchSystem testSystem;
     private final Context context;
     private final ContentManager contentManager;
     private final HashMap<String, Screen> screens;
     private SpriteBatch spriteBatch;
     private Screen currentScreen;
     private long lastTime;
-    public static TouchSystem testSystem;
     //public static NetworkSystem networkSystem;
 
     public MainGLRenderer(Context context) {
