@@ -61,14 +61,5 @@ public class NetworkSystem extends Activity {
     private Callback0 signOut;
 
     public void initialize() {
-        signOut = new Callback0() {
-            public void callback() {
-                Log.d(TAG, "Sign-out button clicked");
-                mSignInClicked = false;
-                Games.signOut(MainActivity.mGoogleApiClient);
-                MainActivity.mGoogleApiClient.disconnect();
-            }
-        };
-
     }
 }
