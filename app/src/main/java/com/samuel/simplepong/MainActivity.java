@@ -14,7 +14,8 @@ import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.plus.Plus;
 import com.samuel.simplepong.framework.messaging.Callback0;
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
@@ -29,7 +30,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         resolvingError = false;
         glSurfaceView = new MainGLSurfaceView(this);
         setContentView(glSurfaceView);
-        googleApiClient = new GoogleApiClient.Builder(this).addApi(Drive.API).addScope(Drive.SCOPE_FILE).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+        googleApiClient = new GoogleApiClient.Builder(this).addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN).addApi(Games.API).addScope(Games.SCOPE_GAMES).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
         MainGLRenderer.messageCenter.addListener("Sign In", new Callback0() {
             @Override
             public void callback() {
