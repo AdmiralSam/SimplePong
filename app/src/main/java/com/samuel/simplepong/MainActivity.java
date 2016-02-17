@@ -20,6 +20,7 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Participant;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
@@ -37,7 +38,7 @@ import java.util.Set;
 
 public class MainActivity extends FragmentActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        //RealTimeMessageReceivedListener,
+        RealTimeMessageReceivedListener,
         RoomStatusUpdateListener, RoomUpdateListener{
 
     final static String TAG = "ButtonClicker2000";
@@ -127,7 +128,7 @@ public class MainActivity extends FragmentActivity
         Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(MIN_OPPONENTS,
                 MAX_OPPONENTS, 0);
         RoomConfig.Builder rtmConfigBuilder = RoomConfig.builder(this);
-        //rtmConfigBuilder.setMessageReceivedListener(this);
+        rtmConfigBuilder.setMessageReceivedListener(this);
         rtmConfigBuilder.setRoomStatusUpdateListener(this);
         rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
         //MainGLRenderer.messageCenter.broadcast("Switch Screens","Game Screen");
@@ -407,6 +408,11 @@ public class MainActivity extends FragmentActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
+    }
+
+    @Override
+    public void onRealTimeMessageReceived(RealTimeMessage realTimeMessage) {
+
     }
 
     /* A fragment to display an error dialog */
