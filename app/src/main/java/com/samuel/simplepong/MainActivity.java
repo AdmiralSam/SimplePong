@@ -70,7 +70,8 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                     googleApiClient.connect();
                 }
             } else {
-
+                resolvingError = true;
+                showErrorDialog(connectionResult.getErrorCode());
             }
         }
     }
@@ -80,7 +81,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         if (requestCode == REQUEST_RESOLUTION) {
             resolvingError = false;
             if (resultCode == RESULT_OK) {
-                Log.e("A","A");
                 signIn();
             }
         }
